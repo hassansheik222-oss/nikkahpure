@@ -1,0 +1,15 @@
+{
+  "short_name": "NikkahPure",
+  "name": "NikkahPure - Halal Marriage",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0D1F17",
+  "background_color": "#0D1F17",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ]
+}
