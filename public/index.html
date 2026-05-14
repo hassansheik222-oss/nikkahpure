@@ -1,14 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0D1F17" />
-    <meta name="description" content="NikkahPure - The Strictest Halal Marriage Platform" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <title>NikkahPure</title>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#0D1F17"/>
+<meta name="description" content="NikkahPure - The Strictest Halal Marriage Platform"/>
+<title>NikkahPure – Verified Halal Marriage</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0D1F17;font-family:'Lato',sans-serif;color:#F0E8D5;min-height:100vh}
+  input,select,textarea,button{font-family:'Lato',sans-serif}
+  select option{background:#1C3A28}
+  ::-webkit-scrollbar{width:6px}
+  ::-webkit-scrollbar-track{background:#0D1F17}
+  ::-webkit-scrollbar-thumb{background:#1A7A4A;border-radius:3px}
+  .card-hover{transition:all 0.25s ease}
+  .card-hover:hover{border-color:#D4A84333!important;box-shadow:0 8px 32px rgba(212,168,67,0.12)!important;background:#163020!important}
+  .btn-primary{background:linear-gradient(135deg,#22A35F,#1A7A4A);color:#fff;border:none;cursor:pointer;transition:opacity 0.2s}
+  .btn-gold{background:linear-gradient(135deg,#D4A843,#A07820);color:#0D1F17;border:none;cursor:pointer;transition:opacity 0.2s}
+  .btn-primary:hover,.btn-gold:hover{opacity:0.85}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .fade-in{animation:fadeIn 0.4s ease forwards}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState} = React;
+
+const C = {
+  bg:"#0D1F17", bgCard:"#112318", bgElevated:"#163020", bgSurface:"#1C3A28",
+  green:"#1A7A4A", greenBright:"#22A35F", greenGlow:"#22A35F22",
+  gold:"#D4A843", goldLight:"#E8C97A", goldDim:"#A07820", goldGlow:"#D4A84322",
+  textPrimary:"#F0E8D5", textSecondary:"#8FAF9A", textMuted:"#4D6B58",
+  border:"#1E3D2A", borderGold:"#D4A84333", danger:"#E05050",
+};
+
+const PROFILES = [
+  {id:1,name:"Ibrahim Al-Farouq",age:29,gender:"M",location:"London, UK",sect:"Sunni",madhab:"Hanafi",prayer:"5× daily",ethnicity:"Sudanese",profession:"Architect",education:"MArch",languages:["English","Arabic"],bio:"Seeking a pious, family-oriented wife. I pray on time, attend Jumuah, and value Islamic knowledge. Quiet, thoughtful, and financially stable.",values:["Piety","Family","Knowledge"],waliName:"Dr. Yusuf Al-Farouq (Father)",initials:"IA",color:"#1A7A4A",mutual:false},
+  {id:2,name:"Omar Bilal",age:31,gender:"M",location:"Toronto, Canada",sect:"Sunni",madhab:"Maliki",prayer:"5× daily",ethnicity:"Moroccan",profession:"Dentist",education:"DDS",languages:["English","Arabic","French"],bio:"Alhamdulillah, practising Muslim seeking a compatible, God-fearing partner. Looking to build a home grounded in sunnah.",values:["Sunnah","Balance","Compassion"],waliName:"N/A",initials:"OB",color:"#8B6914",mutual:true},
+  {id:3,name:"Tariq Hassan",age:27,gender:"M",location:"Dubai, UAE",sect:"Sunni",madhab:"Shafi'i",prayer:"5× daily",ethnicity:"Egyptian",profession:"Engineer",education:"BSc",languages:["Arabic","English"],bio:"Simple man with strong deen. Family comes first. Looking for a wife who is practising and kind-hearted.",values:["Simplicity","Loyalty","Deen"],waliName:"Ahmed Hassan (Father)",initials:"TH",color:"#C9A84C",mutual:false},
+  {id:4,name:"Yusuf Adeyemi",age:33,gender:"M",location:"Chicago, USA",sect:"Sunni",madhab:"Hanbali",prayer:"5× daily",ethnicity:"Nigerian",profession:"Software Engineer",education:"MSc CS",languages:["English","Yoruba","Arabic"],bio:"Tech professional who doesn't let deen take a back seat. Regular at the masjid. Looking for someone equally committed to building an Islamic household.",values:["Growth","Responsibility","Faith"],waliName:"Alhaji Musa Adeyemi (Father)",initials:"YA",color:"#2D5A3D",mutual:true},
+  {id:5,name:"Amina Hassan",age:26,gender:"F",location:"Birmingham, UK",sect:"Sunni",madhab:"Hanafi",prayer:"5× daily",ethnicity:"Somali",profession:"Software Engineer",education:"MSc",languages:["English","Somali","Arabic"],bio:"Alhamdulillah, practising Muslimah seeking a kind, God-fearing husband. I value deen above all.",values:["Modesty","Family","Charitable"],waliName:"Hassan Mohamed (Father)",initials:"AH",color:"#4A7C5E",mutual:false},
+  {id:6,name:"Fatima Al-Rashid",age:24,gender:"F",location:"Toronto, Canada",sect:"Sunni",madhab:"Maliki",prayer:"5× daily",ethnicity:"Arab",profession:"Teacher",education:"BA Islamic Studies",languages:["English","Arabic","French"],bio:"I teach at an Islamic school and am deeply connected to my deen. Seeking a righteous husband with good character.",values:["Piety","Knowledge","Community"],waliName:"Dr. Khalid Al-Rashid (Father)",initials:"FA",color:"#8B6914",mutual:true},
+  {id:7,name:"Zainab Malik",age:28,gender:"F",location:"Chicago, USA",sect:"Sunni",madhab:"Hanafi",prayer:"5× daily",ethnicity:"Pakistani",profession:"Doctor",education:"MBBS",languages:["English","Urdu","Punjabi"],bio:"Practising Muslimah balancing career with Islamic values. Looking for an understanding partner who appreciates hard work and strong deen.",values:["Ambitious","Caring","Pious"],waliName:"Dr. Tariq Malik (Father)",initials:"ZM",color:"#7B4B8E",mutual:false},
+  {id:8,name:"Khadijah Yusuf",age:23,gender:"F",location:"Lagos, Nigeria",sect:"Sunni",madhab:"Maliki",prayer:"5× daily",ethnicity:"Nigerian",profession:"Entrepreneur",education:"BA Business",languages:["English","Hausa","Arabic"],bio:"Named after the Mother of Believers. Running my own modest fashion brand while pursuing Islamic knowledge.",values:["Creative","Devout","Independent"],waliName:"Alhaji Yusuf Bello (Father)",initials:"KY",color:"#2D5A3D",mutual:true},
+];
+
+const SECTS=["Sunni","Shia","Ahmadiyya","Ibadi"];
+const MADHHABS=["Hanafi","Maliki","Shafi'i","Hanbali","Ja'fari","Other"];
+const PRAYERS=["5× daily (never miss)","5× mostly regular","Learning & improving"];
+const ETHNICITIES=["Arab","South Asian","African","Southeast Asian","Turkish","European","Other"];
+const COUNTRIES=["United Kingdom","United States","Canada","UAE","Saudi Arabia","Nigeria","Pakistan","Egypt","Malaysia","Other"];
+
+// ── Patterns ──
+const GeoPat = ({op=0.05}) => (
+  <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none",opacity:op}} viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <pattern id="gp" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+        <circle cx="30" cy="30" r="20" fill="none" stroke="#D4A843" strokeWidth="0.5"/>
+        <circle cx="30" cy="30" r="12" fill="none" stroke="#D4A843" strokeWidth="0.3"/>
+        <line x1="10" y1="30" x2="50" y2="30" stroke="#D4A843" strokeWidth="0.3"/>
+        <line x1="30" y1="10" x2="30" y2="50" stroke="#D4A843" strokeWidth="0.3"/>
+        <polygon points="30,14 34,26 47,26 37,33 41,46 30,38 19,46 23,33 13,26 26,26" fill="none" stroke="#D4A843" strokeWidth="0.4"/>
+      </pattern>
+    </defs>
+    <rect width="300" height="300" fill="url(#gp)"/>
+  </svg>
+);
+
+// ── Small components ──
+const Badge = ({label,variant="green"}) => {
+  const s={green:{background:C.greenGlow,border:`1px solid ${C.green}55`,color:C.greenBright},gold:{background:C.goldGlow,border:`1px solid ${C.gold}55`,color:C.goldLight},muted:{background:"#ffffff08",border:`1px solid ${C.border}`,color:C.textMuted}};
+  const st=s[variant]||s.green;
+  return <span style={{display:"inline-flex",alignItems:"center",gap:4,padding:"3px 10px",borderRadius:20,fontSize:11,fontWeight:700,letterSpacing:"0.04em",...st}}>{label}</span>;
+};
+
+const VerBadge = () => <Badge label="✓ VERIFIED" variant="green"/>;
+
+const Av = ({initials,color,size=64}) => (
+  <div style={{width:size,height:size,borderRadius:"50%",background:`${color}25`,border:`2px solid ${color}60`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:size*0.3,fontWeight:700,color,fontFamily:"'Playfair Display',serif",flexShrink:0}}>
+    {initials}
+  </div>
+);
+
+const Inp = ({label,placeholder,type="text",value,onChange,hint}) => (
+  <div style={{display:"flex",flexDirection:"column",gap:6}}>
+    {label && <label style={{fontSize:11,fontWeight:700,color:C.textMuted,letterSpacing:"0.1em",textTransform:"uppercase"}}>{label}</label>}
+    <input type={type} value={value} onChange={onChange} placeholder={placeholder} style={{padding:"12px 14px",borderRadius:10,background:C.bgSurface,border:`1px solid ${C.border}`,color:C.textPrimary,fontSize:14,outline:"none",width:"100%"}}/>
+< truncated lines 95-523 >
+      </main>
+      {selected && <ProfileModal p={selected} onClose={()=>setSelected(null)} onInterest={toggleInt} expressed={interested.has(selected.id)}/>}
+    </div>
+  );
+};
+
+// ── Landing Page ──
+const Landing = ({onStart}) => (
+  <div style={{minHeight:"100vh",background:C.bg,position:"relative",overflow:"hidden"}}>
+    <GeoPat op={0.05}/>
+    <nav style={{position:"sticky",top:0,zIndex:50,background:`${C.bg}EE`,backdropFilter:"blur(12px)",borderBottom:`1px solid ${C.border}`,padding:"0 20px"}}>
+      <div style={{maxWidth:1100,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",height:62}}>
+        <div>
+          <div style={{fontFamily:"'Playfair Display',serif",fontSize:22,fontWeight:700,color:C.textPrimary,lineHeight:1}}>NikkahPure</div>
+          <div style={{fontSize:9,color:C.gold,letterSpacing:"0.18em",fontWeight:600}}>VERIFIED · HALAL · TRUSTED</div>
+        </div>
+        <div style={{display:"flex",gap:10,alignItems:"center"}}>
+          <span style={{fontSize:12,color:C.textMuted}}>iOS & Android</span>
+          <button className="btn-gold" onClick={onStart} style={{padding:"9px 20px",borderRadius:9,fontWeight:700,fontSize:13,cursor:"pointer"}}>Get Started Free</button>
+        </div>
+      </div>
+    </nav>
+    <div style={{maxWidth:1100,margin:"0 auto",padding:"64px 20px 48px",textAlign:"center",position:"relative"}}>
+      <div style={{fontSize:12,color:C.gold,letterSpacing:"0.2em",fontWeight:600,marginBottom:14}}>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+      <h1 style={{fontFamily:"'Playfair Display',serif",fontSize:"clamp(32px,6vw,64px)",fontWeight:900,color:C.textPrimary,lineHeight:1.1,margin:"0 0 18px"}}>The World's Most<br/><span style={{color:C.gold}}>Strictly Verified</span><br/>Halal Marriage App</h1>
+      <p style={{fontSize:15,color:C.textSecondary,maxWidth:480,margin:"0 auto 28px",lineHeight:1.8}}>Not another swipe app. NikkahPure is built on identity verification, Islamic values, and complete transparency — beating every platform on trust.</p>
+      <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginBottom:40}}>
+        <button className="btn-gold" onClick={onStart} style={{padding:"15px 32px",borderRadius:12,fontWeight:800,fontSize:15,cursor:"pointer"}}>🕌 Get Started — It's Free</button>
+        <button style={{padding:"15px 24px",borderRadius:12,background:"transparent",color:C.textPrimary,border:`1px solid ${C.border}`,fontWeight:600,fontSize:14,cursor:"pointer"}}>📱 Download the App</button>
+      </div>
+      <div style={{display:"flex",gap:14,justifyContent:"center",flexWrap:"wrap"}}>
+        {["100% Verified Profiles","Zero Fake Accounts","Wali System Built-in","Mutual Interest Only"].map(b=>(
+          <span key={b} style={{fontSize:13,color:C.textSecondary}}><span style={{color:C.greenBright,fontWeight:700}}>✓</span> {b}</span>
+        ))}
+      </div>
+    </div>
+    <div style={{maxWidth:1100,margin:"0 auto",padding:"0 20px 60px"}}>
+      <div style={{textAlign:"center",marginBottom:36}}>
+        <div style={{fontFamily:"'Playfair Display',serif",fontSize:30,fontWeight:700,color:C.textPrimary,marginBottom:8}}>Why NikkahPure Beats The Rest</div>
+        <div style={{fontSize:13,color:C.textMuted}}>Every feature designed around Islamic principles and maximum security</div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:16}}>
+        {[
+          {icon:"🪪",t:"Government ID Verified",d:"Every member uploads a real government ID. We check name, age, and photo before anyone goes live."},
+          {icon:"🤳",t:"Live Face Recognition",d:"A live selfie is matched against your ID. No stock photos, no catfishing — ever. AI liveness blocks spoofing."},
+          {icon:"🛡️",t:"Wali Liaison System",d:"Sisters nominate a wali. Contact is facilitated through our dedicated Wali Liaison — keeping the process halal."},
+          {icon:"🔒",t:"Mutual Interest Required",d:"No unsolicited messages. Both parties must express interest before any contact is possible."},
+          {icon:"🌙",t:"Sect & Madhab Matching",d:"You only see profiles that match your sect and madhab exactly. Compatible foundations from day one."},
+          {icon:"👁️",t:"Admin-Reviewed Profiles",d:"No profile goes live without a human moderator approving the photo, ID, and bio. Zero automation loopholes."},
+        ].map(f=>(
+          <div key={f.t} className="card-hover" style={{background:C.bgCard,border:`1px solid ${C.border}`,borderRadius:14,padding:"20px 18px"}}>
+            <div style={{width:42,height:42,borderRadius:10,background:C.goldGlow,border:`1px solid ${C.borderGold}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,marginBottom:12}}>{f.icon}</div>
+            <div style={{fontFamily:"'Playfair Display',serif",fontSize:16,fontWeight:700,color:C.textPrimary,marginBottom:6}}>{f.t}</div>
+            <p style={{fontSize:13,color:C.textSecondary,lineHeight:1.7,margin:0}}>{f.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div style={{background:C.bgCard,borderTop:`1px solid ${C.border}`,padding:"40px 20px",textAlign:"center"}}>
+      <div style={{fontFamily:"'Playfair Display',serif",fontSize:26,color:C.textPrimary,marginBottom:8}}>Download NikkahPure</div>
+      <p style={{fontSize:13,color:C.textMuted,marginBottom:24}}>Available on Google Play Store and Apple App Store. Free to download and register.</p>
+      <div style={{display:"flex",gap:14,justifyContent:"center",flexWrap:"wrap",marginBottom:20}}>
+        {[{store:"Google Play",icon:"▶",sub:"GET IT ON"},{store:"App Store",icon:"🍎",sub:"Download on the"}].map(s=>(
+          <div key={s.store} style={{display:"flex",alignItems:"center",gap:10,background:C.bgSurface,border:`1px solid ${C.borderGold}`,borderRadius:12,padding:"12px 20px",cursor:"pointer",minWidth:160}}>
+            <span style={{fontSize:24}}>{s.icon}</span>
+            <div style={{textAlign:"left"}}>
+              <div style={{fontSize:9,color:C.textMuted,letterSpacing:"0.08em"}}>{s.sub}</div>
+              <div style={{fontFamily:"'Playfair Display',serif",fontSize:16,fontWeight:700,color:C.textPrimary}}>{s.store}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p style={{fontSize:11,color:C.textMuted}}>Built with Islamic values · GDPR compliant · Data encrypted · © 2025 NikkahPure Ltd</p>
+      <div style={{display:"flex",gap:16,justifyContent:"center",marginTop:10,flexWrap:"wrap"}}>
+        {["Privacy Policy","Terms of Service","Islamic Guidelines","Contact Us","Report Abuse"].map(l=>(
+          <span key={l} style={{fontSize:11,color:C.textMuted,cursor:"pointer",textDecoration:"underline"}}>{l}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+// ── Root ──
+const App = () => {
+  const [page,setPage]=useState("landing");
+  if(page==="landing") return <Landing onStart={()=>setPage("onboarding")}/>;
+  if(page==="onboarding") return <Onboarding onFinish={()=>setPage("app")}/>;
+  return <MainApp/>;
+};
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
 </html>
