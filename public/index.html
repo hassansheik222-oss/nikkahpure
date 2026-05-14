@@ -1,188 +1,817 @@
+cat > /mnt/user-data/outputs/index.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="theme-color" content="#0D1F17"/>
-<meta name="description" content="NikkahPure - The Strictest Halal Marriage Platform"/>
-<title>NikkahPure – Verified Halal Marriage</title>
+<title>NikkahPure - Verified Halal Marriage</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{background:#0D1F17;font-family:'Lato',sans-serif;color:#F0E8D5;min-height:100vh}
-  input,select,textarea,button{font-family:'Lato',sans-serif}
-  select option{background:#1C3A28}
-  ::-webkit-scrollbar{width:6px}
-  ::-webkit-scrollbar-track{background:#0D1F17}
-  ::-webkit-scrollbar-thumb{background:#1A7A4A;border-radius:3px}
-  .card-hover{transition:all 0.25s ease}
-  .card-hover:hover{border-color:#D4A84333!important;box-shadow:0 8px 32px rgba(212,168,67,0.12)!important;background:#163020!important}
-  .btn-primary{background:linear-gradient(135deg,#22A35F,#1A7A4A);color:#fff;border:none;cursor:pointer;transition:opacity 0.2s}
-  .btn-gold{background:linear-gradient(135deg,#D4A843,#A07820);color:#0D1F17;border:none;cursor:pointer;transition:opacity 0.2s}
-  .btn-primary:hover,.btn-gold:hover{opacity:0.85}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-  .fade-in{animation:fadeIn 0.4s ease forwards}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0D1F17;font-family:'Lato',sans-serif;color:#F0E8D5;min-height:100vh}
+input,select,textarea,button{font-family:'Lato',sans-serif}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#0D1F17}
+::-webkit-scrollbar-thumb{background:#1A7A4A;border-radius:3px}
+.hover-card{transition:all 0.25s}
+.hover-card:hover{background:#163020!important;border-color:#D4A84355!important;box-shadow:0 8px 32px rgba(212,168,67,0.12)!important}
+.btn-green{background:linear-gradient(135deg,#22A35F,#1A7A4A);color:#fff;border:none;cursor:pointer;font-family:'Lato',sans-serif;transition:opacity 0.2s}
+.btn-gold{background:linear-gradient(135deg,#D4A843,#A07820);color:#0D1F17;border:none;cursor:pointer;font-family:'Lato',sans-serif;transition:opacity 0.2s}
+.btn-green:hover,.btn-gold:hover{opacity:0.85}
+.btn-outline{background:transparent;color:#F0E8D5;border:1px solid #1E3D2A;cursor:pointer;font-family:'Lato',sans-serif}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fadein{animation:fadeIn 0.4s ease forwards}
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const {useState} = React;
-
-const C = {
-  bg:"#0D1F17", bgCard:"#112318", bgElevated:"#163020", bgSurface:"#1C3A28",
-  green:"#1A7A4A", greenBright:"#22A35F", greenGlow:"#22A35F22",
-  gold:"#D4A843", goldLight:"#E8C97A", goldDim:"#A07820", goldGlow:"#D4A84322",
-  textPrimary:"#F0E8D5", textSecondary:"#8FAF9A", textMuted:"#4D6B58",
-  border:"#1E3D2A", borderGold:"#D4A84333", danger:"#E05050",
-};
-
-const PROFILES = [
-  {id:1,name:"Ibrahim Al-Farouq",age:29,gender:"M",location:"London, UK",sect:"Sunni",madhab:"Hanafi",prayer:"5× daily",ethnicity:"Sudanese",profession:"Architect",education:"MArch",languages:["English","Arabic"],bio:"Seeking a pious, family-oriented wife. I pray on time, attend Jumuah, and value Islamic knowledge. Quiet, thoughtful, and financially stable.",values:["Piety","Family","Knowledge"],waliName:"Dr. Yusuf Al-Farouq (Father)",initials:"IA",color:"#1A7A4A",mutual:false},
-  {id:2,name:"Omar Bilal",age:31,gender:"M",location:"Toronto, Canada",sect:"Sunni",madhab:"Maliki",prayer:"5× daily",ethnicity:"Moroccan",profession:"Dentist",education:"DDS",languages:["English","Arabic","French"],bio:"Alhamdulillah, practising Muslim seeking a compatible, God-fearing partner. Looking to build a home grounded in sunnah.",values:["Sunnah","Balance","Compassion"],waliName:"N/A",initials:"OB",color:"#8B6914",mutual:true},
-  {id:3,name:"Tariq Hassan",age:27,gender:"M",location:"Dubai, UAE",sect:"Sunni",madhab:"Shafi'i",prayer:"5× daily",ethnicity:"Egyptian",profession:"Engineer",education:"BSc",languages:["Arabic","English"],bio:"Simple man with strong deen. Family comes first. Looking for a wife who is practising and kind-hearted.",values:["Simplicity","Loyalty","Deen"],waliName:"Ahmed Hassan (Father)",initials:"TH",color:"#C9A84C",mutual:false},
-  {id:4,name:"Yusuf Adeyemi",age:33,gender:"M",location:"Chicago, USA",sect:"Sunni",madhab:"Hanbali",prayer:"5× daily",ethnicity:"Nigerian",profession:"Software Engineer",education:"MSc CS",languages:["English","Yoruba","Arabic"],bio:"Tech professional who doesn't let deen take a back seat. Regular at the masjid. Looking for someone equally committed to building an Islamic household.",values:["Growth","Responsibility","Faith"],waliName:"Alhaji Musa Adeyemi (Father)",initials:"YA",color:"#2D5A3D",mutual:true},
-  {id:5,name:"Amina Hassan",age:26,gender:"F",location:"Birmingham, UK",sect:"Sunni",madhab:"Hanafi",prayer:"5× daily",ethnicity:"Somali",profession:"Software Engineer",education:"MSc",languages:["English","Somali","Arabic"],bio:"Alhamdulillah, practising Muslimah seeking a kind, God-fearing husband. I value deen above all.",values:["Modesty","Family","Charitable"],waliName:"Hassan Mohamed (Father)",initials:"AH",color:"#4A7C5E",mutual:false},
-  {id:6,name:"Fatima Al-Rashid",age:24,gender:"F",location:"Toronto, Canada",sect:"Sunni",madhab:"Maliki",prayer:"5× daily",ethnicity:"Arab",profession:"Teacher",education:"BA Islamic Studies",languages:["English","Arabic","French"],bio:"I teach at an Islamic school and am deeply connected to my deen. Seeking a righteous husband with good character.",values:["Piety","Knowledge","Community"],waliName:"Dr. Khalid Al-Rashid (Father)",initials:"FA",color:"#8B6914",mutual:true},
-  {id:7,name:"Zainab Malik",age:28,gender:"F",location:"Chicago, USA",sect:"Sunni",madhab:"Hanafi",prayer:"5× daily",ethnicity:"Pakistani",profession:"Doctor",education:"MBBS",languages:["English","Urdu","Punjabi"],bio:"Practising Muslimah balancing career with Islamic values. Looking for an understanding partner who appreciates hard work and strong deen.",values:["Ambitious","Caring","Pious"],waliName:"Dr. Tariq Malik (Father)",initials:"ZM",color:"#7B4B8E",mutual:false},
-  {id:8,name:"Khadijah Yusuf",age:23,gender:"F",location:"Lagos, Nigeria",sect:"Sunni",madhab:"Maliki",prayer:"5× daily",ethnicity:"Nigerian",profession:"Entrepreneur",education:"BA Business",languages:["English","Hausa","Arabic"],bio:"Named after the Mother of Believers. Running my own modest fashion brand while pursuing Islamic knowledge.",values:["Creative","Devout","Independent"],waliName:"Alhaji Yusuf Bello (Father)",initials:"KY",color:"#2D5A3D",mutual:true},
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+<script>
+// ── Data ──────────────────────────────────────────────────────
+var PROFILES = [
+  {id:1,name:"Ibrahim Al-Farouq",age:29,gender:"M",location:"London, UK",sect:"Sunni",madhab:"Hanafi",prayer:"5x daily",ethnicity:"Sudanese",profession:"Architect",education:"MArch",bio:"Seeking a pious, family-oriented wife. I pray on time, attend Jumuah, and value Islamic knowledge. Quiet, thoughtful, and financially stable.",wali:"Dr. Yusuf Al-Farouq (Father)",ini:"IA",col:"#1A7A4A",mutual:false},
+  {id:2,name:"Omar Bilal",age:31,gender:"M",location:"Toronto, Canada",sect:"Sunni",madhab:"Maliki",prayer:"5x daily",ethnicity:"Moroccan",profession:"Dentist",education:"DDS",bio:"Alhamdulillah, practising Muslim seeking a compatible God-fearing partner. Looking to build a home grounded in sunnah.",wali:"N/A",ini:"OB",col:"#8B6914",mutual:true},
+  {id:3,name:"Tariq Hassan",age:27,gender:"M",location:"Dubai, UAE",sect:"Sunni",madhab:"Shafi'i",prayer:"5x daily",ethnicity:"Egyptian",profession:"Engineer",education:"BSc",bio:"Simple man with strong deen. Family comes first. Looking for a wife who is practising and kind-hearted.",wali:"Ahmed Hassan (Father)",ini:"TH",col:"#C9A84C",mutual:false},
+  {id:4,name:"Yusuf Adeyemi",age:33,gender:"M",location:"Chicago, USA",sect:"Sunni",madhab:"Hanbali",prayer:"5x daily",ethnicity:"Nigerian",profession:"Software Engineer",education:"MSc",bio:"Tech professional who does not let deen take a back seat. Regular at the masjid. Looking for someone equally committed.",wali:"Alhaji Musa Adeyemi (Father)",ini:"YA",col:"#2D5A3D",mutual:true},
+  {id:5,name:"Amina Hassan",age:26,gender:"F",location:"Birmingham, UK",sect:"Sunni",madhab:"Hanafi",prayer:"5x daily",ethnicity:"Somali",profession:"Software Engineer",education:"MSc",bio:"Alhamdulillah, practising Muslimah seeking a kind God-fearing husband. I value deen above all else.",wali:"Hassan Mohamed (Father)",ini:"AH",col:"#4A7C5E",mutual:false},
+  {id:6,name:"Fatima Al-Rashid",age:24,gender:"F",location:"Toronto, Canada",sect:"Sunni",madhab:"Maliki",prayer:"5x daily",ethnicity:"Arab",profession:"Teacher",education:"BA Islamic Studies",bio:"I teach at an Islamic school and am deeply connected to my deen. Seeking a righteous husband with good character.",wali:"Dr. Khalid Al-Rashid (Father)",ini:"FA",col:"#8B6914",mutual:true},
+  {id:7,name:"Zainab Malik",age:28,gender:"F",location:"Chicago, USA",sect:"Sunni",madhab:"Hanafi",prayer:"5x daily",ethnicity:"Pakistani",profession:"Doctor",education:"MBBS",bio:"Practising Muslimah balancing career with Islamic values. Looking for a partner who appreciates hard work and strong deen.",wali:"Dr. Tariq Malik (Father)",ini:"ZM",col:"#7B4B8E",mutual:false},
+  {id:8,name:"Khadijah Yusuf",age:23,gender:"F",location:"Lagos, Nigeria",sect:"Sunni",madhab:"Maliki",prayer:"5x daily",ethnicity:"Nigerian",profession:"Entrepreneur",education:"BA Business",bio:"Named after the Mother of Believers. Running my own modest fashion brand while pursuing Islamic knowledge.",wali:"Alhaji Yusuf Bello (Father)",ini:"KY",col:"#2D5A3D",mutual:true}
 ];
 
-const SECTS=["Sunni","Shia","Ahmadiyya","Ibadi"];
-const MADHHABS=["Hanafi","Maliki","Shafi'i","Hanbali","Ja'fari","Other"];
-const PRAYERS=["5× daily (never miss)","5× mostly regular","Learning & improving"];
-const ETHNICITIES=["Arab","South Asian","African","Southeast Asian","Turkish","European","Other"];
-const COUNTRIES=["United Kingdom","United States","Canada","UAE","Saudi Arabia","Nigeria","Pakistan","Egypt","Malaysia","Other"];
+var SECTS = ["Sunni","Shia","Ahmadiyya","Ibadi"];
+var MADHHABS = ["Hanafi","Maliki","Shafi'i","Hanbali","Ja'fari","Other"];
+var PRAYERS = ["5x daily (never miss)","5x mostly regular","Learning and improving"];
+var ETHNICITIES = ["Arab","South Asian","African","Southeast Asian","Turkish","European","Other"];
+var COUNTRIES = ["United Kingdom","United States","Canada","UAE","Saudi Arabia","Nigeria","Pakistan","Egypt","Malaysia","Other"];
 
-// ── Patterns ──
-const GeoPat = ({op=0.05}) => (
-  <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none",opacity:op}} viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice">
-    <defs>
-      <pattern id="gp" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
-        <circle cx="30" cy="30" r="20" fill="none" stroke="#D4A843" strokeWidth="0.5"/>
-        <circle cx="30" cy="30" r="12" fill="none" stroke="#D4A843" strokeWidth="0.3"/>
-        <line x1="10" y1="30" x2="50" y2="30" stroke="#D4A843" strokeWidth="0.3"/>
-        <line x1="30" y1="10" x2="30" y2="50" stroke="#D4A843" strokeWidth="0.3"/>
-        <polygon points="30,14 34,26 47,26 37,33 41,46 30,38 19,46 23,33 13,26 26,26" fill="none" stroke="#D4A843" strokeWidth="0.4"/>
-      </pattern>
-    </defs>
-    <rect width="300" height="300" fill="url(#gp)"/>
-  </svg>
-);
+// ── Helpers ───────────────────────────────────────────────────
+var e = React.createElement;
+var useState = React.useState;
 
-// ── Small components ──
-const Badge = ({label,variant="green"}) => {
-  const s={green:{background:C.greenGlow,border:`1px solid ${C.green}55`,color:C.greenBright},gold:{background:C.goldGlow,border:`1px solid ${C.gold}55`,color:C.goldLight},muted:{background:"#ffffff08",border:`1px solid ${C.border}`,color:C.textMuted}};
-  const st=s[variant]||s.green;
-  return <span style={{display:"inline-flex",alignItems:"center",gap:4,padding:"3px 10px",borderRadius:20,fontSize:11,fontWeight:700,letterSpacing:"0.04em",...st}}>{label}</span>;
-};
+function ce(tag, props) {
+  var args = [tag, props];
+  for (var i = 2; i < arguments.length; i++) args.push(arguments[i]);
+  return React.createElement.apply(React, args);
+}
 
-const VerBadge = () => <Badge label="✓ VERIFIED" variant="green"/>;
-
-const Av = ({initials,color,size=64}) => (
-  <div style={{width:size,height:size,borderRadius:"50%",background:`${color}25`,border:`2px solid ${color}60`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:size*0.3,fontWeight:700,color,fontFamily:"'Playfair Display',serif",flexShrink:0}}>
-    {initials}
-  </div>
-);
-
-const Inp = ({label,placeholder,type="text",value,onChange,hint}) => (
-  <div style={{display:"flex",flexDirection:"column",gap:6}}>
-    {label && <label style={{fontSize:11,fontWeight:700,color:C.textMuted,letterSpacing:"0.1em",textTransform:"uppercase"}}>{label}</label>}
-    <input type={type} value={value} onChange={onChange} placeholder={placeholder} style={{padding:"12px 14px",borderRadius:10,background:C.bgSurface,border:`1px solid ${C.border}`,color:C.textPrimary,fontSize:14,outline:"none",width:"100%"}}/>
-< truncated lines 95-523 >
-      </main>
-      {selected && <ProfileModal p={selected} onClose={()=>setSelected(null)} onInterest={toggleInt} expressed={interested.has(selected.id)}/>}
-    </div>
+// ── Pattern SVG ───────────────────────────────────────────────
+function GeoPat(props) {
+  var op = props.op || 0.05;
+  return ce("svg", {
+    style:{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none",opacity:op},
+    viewBox:"0 0 300 300",
+    preserveAspectRatio:"xMidYMid slice"
+  },
+    ce("defs", null,
+      ce("pattern", {id:"gp",x:"0",y:"0",width:"60",height:"60",patternUnits:"userSpaceOnUse"},
+        ce("circle",{cx:"30",cy:"30",r:"20",fill:"none",stroke:"#D4A843",strokeWidth:"0.5"}),
+        ce("circle",{cx:"30",cy:"30",r:"12",fill:"none",stroke:"#D4A843",strokeWidth:"0.3"}),
+        ce("line",{x1:"10",y1:"30",x2:"50",y2:"30",stroke:"#D4A843",strokeWidth:"0.3"}),
+        ce("line",{x1:"30",y1:"10",x2:"30",y2:"50",stroke:"#D4A843",strokeWidth:"0.3"})
+      )
+    ),
+    ce("rect",{width:"300",height:"300",fill:"url(#gp)"})
   );
-};
+}
 
-// ── Landing Page ──
-const Landing = ({onStart}) => (
-  <div style={{minHeight:"100vh",background:C.bg,position:"relative",overflow:"hidden"}}>
-    <GeoPat op={0.05}/>
-    <nav style={{position:"sticky",top:0,zIndex:50,background:`${C.bg}EE`,backdropFilter:"blur(12px)",borderBottom:`1px solid ${C.border}`,padding:"0 20px"}}>
-      <div style={{maxWidth:1100,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",height:62}}>
-        <div>
-          <div style={{fontFamily:"'Playfair Display',serif",fontSize:22,fontWeight:700,color:C.textPrimary,lineHeight:1}}>NikkahPure</div>
-          <div style={{fontSize:9,color:C.gold,letterSpacing:"0.18em",fontWeight:600}}>VERIFIED · HALAL · TRUSTED</div>
-        </div>
-        <div style={{display:"flex",gap:10,alignItems:"center"}}>
-          <span style={{fontSize:12,color:C.textMuted}}>iOS & Android</span>
-          <button className="btn-gold" onClick={onStart} style={{padding:"9px 20px",borderRadius:9,fontWeight:700,fontSize:13,cursor:"pointer"}}>Get Started Free</button>
-        </div>
-      </div>
-    </nav>
-    <div style={{maxWidth:1100,margin:"0 auto",padding:"64px 20px 48px",textAlign:"center",position:"relative"}}>
-      <div style={{fontSize:12,color:C.gold,letterSpacing:"0.2em",fontWeight:600,marginBottom:14}}>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
-      <h1 style={{fontFamily:"'Playfair Display',serif",fontSize:"clamp(32px,6vw,64px)",fontWeight:900,color:C.textPrimary,lineHeight:1.1,margin:"0 0 18px"}}>The World's Most<br/><span style={{color:C.gold}}>Strictly Verified</span><br/>Halal Marriage App</h1>
-      <p style={{fontSize:15,color:C.textSecondary,maxWidth:480,margin:"0 auto 28px",lineHeight:1.8}}>Not another swipe app. NikkahPure is built on identity verification, Islamic values, and complete transparency — beating every platform on trust.</p>
-      <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginBottom:40}}>
-        <button className="btn-gold" onClick={onStart} style={{padding:"15px 32px",borderRadius:12,fontWeight:800,fontSize:15,cursor:"pointer"}}>🕌 Get Started — It's Free</button>
-        <button style={{padding:"15px 24px",borderRadius:12,background:"transparent",color:C.textPrimary,border:`1px solid ${C.border}`,fontWeight:600,fontSize:14,cursor:"pointer"}}>📱 Download the App</button>
-      </div>
-      <div style={{display:"flex",gap:14,justifyContent:"center",flexWrap:"wrap"}}>
-        {["100% Verified Profiles","Zero Fake Accounts","Wali System Built-in","Mutual Interest Only"].map(b=>(
-          <span key={b} style={{fontSize:13,color:C.textSecondary}}><span style={{color:C.greenBright,fontWeight:700}}>✓</span> {b}</span>
-        ))}
-      </div>
-    </div>
-    <div style={{maxWidth:1100,margin:"0 auto",padding:"0 20px 60px"}}>
-      <div style={{textAlign:"center",marginBottom:36}}>
-        <div style={{fontFamily:"'Playfair Display',serif",fontSize:30,fontWeight:700,color:C.textPrimary,marginBottom:8}}>Why NikkahPure Beats The Rest</div>
-        <div style={{fontSize:13,color:C.textMuted}}>Every feature designed around Islamic principles and maximum security</div>
-      </div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:16}}>
-        {[
-          {icon:"🪪",t:"Government ID Verified",d:"Every member uploads a real government ID. We check name, age, and photo before anyone goes live."},
-          {icon:"🤳",t:"Live Face Recognition",d:"A live selfie is matched against your ID. No stock photos, no catfishing — ever. AI liveness blocks spoofing."},
-          {icon:"🛡️",t:"Wali Liaison System",d:"Sisters nominate a wali. Contact is facilitated through our dedicated Wali Liaison — keeping the process halal."},
-          {icon:"🔒",t:"Mutual Interest Required",d:"No unsolicited messages. Both parties must express interest before any contact is possible."},
-          {icon:"🌙",t:"Sect & Madhab Matching",d:"You only see profiles that match your sect and madhab exactly. Compatible foundations from day one."},
-          {icon:"👁️",t:"Admin-Reviewed Profiles",d:"No profile goes live without a human moderator approving the photo, ID, and bio. Zero automation loopholes."},
-        ].map(f=>(
-          <div key={f.t} className="card-hover" style={{background:C.bgCard,border:`1px solid ${C.border}`,borderRadius:14,padding:"20px 18px"}}>
-            <div style={{width:42,height:42,borderRadius:10,background:C.goldGlow,border:`1px solid ${C.borderGold}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,marginBottom:12}}>{f.icon}</div>
-            <div style={{fontFamily:"'Playfair Display',serif",fontSize:16,fontWeight:700,color:C.textPrimary,marginBottom:6}}>{f.t}</div>
-            <p style={{fontSize:13,color:C.textSecondary,lineHeight:1.7,margin:0}}>{f.d}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-    <div style={{background:C.bgCard,borderTop:`1px solid ${C.border}`,padding:"40px 20px",textAlign:"center"}}>
-      <div style={{fontFamily:"'Playfair Display',serif",fontSize:26,color:C.textPrimary,marginBottom:8}}>Download NikkahPure</div>
-      <p style={{fontSize:13,color:C.textMuted,marginBottom:24}}>Available on Google Play Store and Apple App Store. Free to download and register.</p>
-      <div style={{display:"flex",gap:14,justifyContent:"center",flexWrap:"wrap",marginBottom:20}}>
-        {[{store:"Google Play",icon:"▶",sub:"GET IT ON"},{store:"App Store",icon:"🍎",sub:"Download on the"}].map(s=>(
-          <div key={s.store} style={{display:"flex",alignItems:"center",gap:10,background:C.bgSurface,border:`1px solid ${C.borderGold}`,borderRadius:12,padding:"12px 20px",cursor:"pointer",minWidth:160}}>
-            <span style={{fontSize:24}}>{s.icon}</span>
-            <div style={{textAlign:"left"}}>
-              <div style={{fontSize:9,color:C.textMuted,letterSpacing:"0.08em"}}>{s.sub}</div>
-              <div style={{fontFamily:"'Playfair Display',serif",fontSize:16,fontWeight:700,color:C.textPrimary}}>{s.store}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-      <p style={{fontSize:11,color:C.textMuted}}>Built with Islamic values · GDPR compliant · Data encrypted · © 2025 NikkahPure Ltd</p>
-      <div style={{display:"flex",gap:16,justifyContent:"center",marginTop:10,flexWrap:"wrap"}}>
-        {["Privacy Policy","Terms of Service","Islamic Guidelines","Contact Us","Report Abuse"].map(l=>(
-          <span key={l} style={{fontSize:11,color:C.textMuted,cursor:"pointer",textDecoration:"underline"}}>{l}</span>
-        ))}
-      </div>
-    </div>
-  </div>
-);
-// ── Root ──
-const App = () => {
-  const [page,setPage]=useState("landing");
-  if(page==="landing") return <Landing onStart={()=>setPage("onboarding")}/>;
-  if(page==="onboarding") return <Onboarding onFinish={()=>setPage("app")}/>;
-  return <MainApp/>;
-};
+// ── Avatar ────────────────────────────────────────────────────
+function Av(props) {
+  var size = props.size || 60;
+  return ce("div", {
+    style:{
+      width:size,height:size,borderRadius:"50%",
+      background:props.col+"25",
+      border:"2px solid "+props.col+"60",
+      display:"flex",alignItems:"center",justifyContent:"center",
+      fontSize:Math.floor(size*0.3),fontWeight:700,color:props.col,
+      fontFamily:"'Playfair Display',serif",flexShrink:0
+    }
+  }, props.ini);
+}
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+// ── Badge ─────────────────────────────────────────────────────
+function Badge(props) {
+  var colors = {
+    green:{background:"#22A35F22",border:"1px solid #1A7A4A55",color:"#22A35F"},
+    gold:{background:"#D4A84322",border:"1px solid #D4A84355",color:"#E8C97A"},
+    muted:{background:"#ffffff08",border:"1px solid #1E3D2A",color:"#4D6B58"}
+  };
+  var s = colors[props.v] || colors.green;
+  return ce("span", {
+    style:Object.assign({
+      display:"inline-flex",alignItems:"center",gap:4,
+      padding:"3px 10px",borderRadius:20,
+      fontSize:11,fontWeight:700,letterSpacing:"0.04em"
+    }, s)
+  }, props.label);
+}
+
+// ── Profile Card ──────────────────────────────────────────────
+function ProfileCard(props) {
+  var p = props.p;
+  var expressed = props.expressed;
+  var mutual = props.mutual;
+
+  return ce("div", {
+    className:"hover-card",
+    style:{
+      background:"#112318",border:"1px solid #1E3D2A",
+      borderRadius:16,padding:20,position:"relative",overflow:"hidden",
+      cursor:"pointer"
+    }
+  },
+    ce(GeoPat, {op:0.03}),
+    ce("div", {style:{position:"relative"}},
+      ce("div", {style:{display:"flex",gap:14,alignItems:"flex-start",marginBottom:14}},
+        ce(Av, {ini:p.ini,col:p.col,size:56}),
+        ce("div", {style:{flex:1}},
+          ce("div", {style:{fontFamily:"'Playfair Display',serif",fontSize:18,fontWeight:700,color:"#F0E8D5",marginBottom:3}}, p.name),
+          ce("div", {style:{fontSize:12,color:"#8FAF9A",marginBottom:6}}, "📍 "+p.location+" · "+p.age+" yrs"),
+          ce("div", {style:{display:"flex",gap:6,flexWrap:"wrap"}},
+            ce(Badge, {label:"✓ VERIFIED",v:"green"}),
+            mutual && ce(Badge, {label:"💚 Mutual",v:"green"})
+          )
+        )
+      ),
+      ce("div", {style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:12}},
+        [{l:"Sect",v:p.sect},{l:"Madhab",v:p.madhab},{l:"Prayer",v:p.prayer},{l:"From",v:p.ethnicity}].map(function(f) {
+          return ce("div", {key:f.l,style:{background:"#1C3A28",borderRadius:8,padding:"7px 10px",border:"1px solid #1E3D2A"}},
+            ce("div", {style:{fontSize:10,color:"#4D6B58",fontWeight:700,marginBottom:2}}, f.l.toUpperCase()),
+            ce("div", {style:{fontSize:12,color:"#F0E8D5",fontWeight:600}}, f.v)
+          );
+        })
+      ),
+      ce("p", {style:{fontSize:12,color:"#8FAF9A",lineHeight:1.7,margin:"0 0 12px"}},
+        p.bio.slice(0,100)+"..."
+      ),
+      ce("div", {style:{display:"flex",gap:8}},
+        ce("button", {
+          className:"btn-green",
+          onClick:function(){props.onView(p);},
+          style:{flex:1,padding:"9px 0",borderRadius:9,fontWeight:700,fontSize:12}
+        }, "View Profile"),
+        ce("button", {
+          onClick:function(){props.onInterest(p.id);},
+          style:{
+            width:38,height:38,borderRadius:9,flexShrink:0,
+            background:expressed?"#E0505018":"#1C3A28",
+            border:"1px solid "+(expressed?"#E0505055":"#1E3D2A"),
+            cursor:"pointer",fontSize:16
+          }
+        }, expressed?"❤️":"🤍")
+      )
+    )
+  );
+}
+
+// ── Profile Modal ─────────────────────────────────────────────
+function ProfileModal(props) {
+  var p = props.p;
+  var expressed = props.expressed;
+
+  return ce("div", {
+    onClick:function(ev){if(ev.target===ev.currentTarget)props.onClose();},
+    style:{
+      position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",
+      zIndex:200,display:"flex",alignItems:"center",justifyContent:"center",
+      padding:20,backdropFilter:"blur(6px)"
+    }
+  },
+    ce("div", {
+      style:{
+        background:"#112318",borderRadius:20,maxWidth:520,width:"100%",
+        maxHeight:"90vh",overflowY:"auto",
+        border:"1px solid #D4A84333",
+        boxShadow:"0 32px 80px rgba(0,0,0,0.6)"
+      }
+    },
+      ce("div", {
+        style:{
+          background:"linear-gradient(150deg,#163020,#0D1F17)",
+          padding:"28px 24px 20px",borderRadius:"20px 20px 0 0",
+          position:"relative",overflow:"hidden"
+        }
+      },
+        ce(GeoPat,{op:0.06}),
+        ce("button", {
+          onClick:props.onClose,
+          style:{
+            position:"absolute",top:14,right:14,width:32,height:32,
+            borderRadius:8,background:"#1C3A28",border:"1px solid #1E3D2A",
+            cursor:"pointer",fontSize:18,color:"#4D6B58",
+            display:"flex",alignItems:"center",justifyContent:"center"
+          }
+        },"✕"),
+        ce("div", {style:{display:"flex",gap:18,alignItems:"center",position:"relative"}},
+          ce(Av,{ini:p.ini,col:p.col,size:80}),
+          ce("div", null,
+            ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:24,fontWeight:700,color:"#F0E8D5"}},p.name),
+            ce("div",{style:{color:"#8FAF9A",fontSize:13,marginTop:4}},"📍 "+p.location+" · "+p.age+" years old"),
+            ce("div",{style:{display:"flex",gap:6,marginTop:8,flexWrap:"wrap"}},
+              ce(Badge,{label:"✓ VERIFIED",v:"green"}),
+              ce(Badge,{label:p.gender==="M"?"🕌 Brother":"🌸 Sister",v:"gold"})
+            )
+          )
+        )
+      ),
+      ce("div",{style:{padding:"20px 24px 24px",display:"flex",flexDirection:"column",gap:16}},
+        ce("div",{style:{background:"#22A35F22",border:"1px solid #1A7A4A44",borderRadius:12,padding:"12px 14px"}},
+          ce("div",{style:{fontWeight:700,fontSize:13,color:"#22A35F",marginBottom:6}},"🛡️ Identity Verified"),
+          ce("div",{style:{display:"flex",gap:6,flexWrap:"wrap"}},
+            ce(Badge,{label:"✓ Govt ID",v:"green"}),
+            ce(Badge,{label:"✓ Face Match",v:"green"}),
+            ce(Badge,{label:"✓ Phone & Email",v:"green"})
+          )
+        ),
+        ce("div",null,
+          ce("div",{style:{fontSize:11,fontWeight:700,color:"#D4A843",letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:8}},"About"),
+          ce("p",{style:{fontSize:13,color:"#8FAF9A",lineHeight:1.8,margin:0}},p.bio)
+        ),
+        ce("div",null,
+          ce("div",{style:{fontSize:11,fontWeight:700,color:"#D4A843",letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:10}},"Islamic Profile"),
+          ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}},
+            [{l:"Sect",v:p.sect},{l:"Madhab",v:p.madhab},{l:"Prayer",v:p.prayer},{l:"Ethnicity",v:p.ethnicity},{l:"Education",v:p.education},{l:"Profession",v:p.profession}].map(function(f){
+              return ce("div",{key:f.l,style:{background:"#1C3A28",borderRadius:10,padding:"10px 12px",border:"1px solid #1E3D2A"}},
+                ce("div",{style:{fontSize:10,color:"#4D6B58",fontWeight:700,marginBottom:3}},f.l.toUpperCase()),
+                ce("div",{style:{fontSize:13,color:"#F0E8D5",fontWeight:600}},f.v)
+              );
+            })
+          )
+        ),
+        ce("div",{style:{background:"#1C3A28",border:"1px solid #D4A84333",borderRadius:12,padding:"12px 14px"}},
+          ce("div",{style:{fontWeight:700,fontSize:13,color:"#D4A843",marginBottom:4}},"🛡️ Wali / Guardian"),
+          ce("div",{style:{fontSize:13,color:"#8FAF9A"}},p.wali),
+          ce("div",{style:{fontSize:12,color:"#4D6B58",marginTop:4}},"Contact facilitated through our Wali Liaison after mutual interest confirmed.")
+        ),
+        ce("div",{style:{background:"#D4A84309",border:"1px solid #D4A84333",borderRadius:12,padding:"12px 14px",fontSize:12,color:"#4D6B58",lineHeight:1.6}},
+          "🔒 ",ce("strong",{style:{color:"#E8C97A"}},"Mutual Interest Required.")," Messages unlock only after both parties express interest."
+        ),
+        ce("button",{
+          onClick:function(){props.onInterest(p.id);},
+          style:{
+            padding:"13px 0",borderRadius:12,width:"100%",
+            background:expressed?"#C9404020":"linear-gradient(135deg,#D4A843,#A07820)",
+            color:expressed?"#E05050":"#0D1F17",
+            border:expressed?"1px solid #E0505044":"none",
+            fontWeight:700,fontSize:14,cursor:"pointer",
+            fontFamily:"'Lato',sans-serif"
+          }
+        }, expressed?"💔 Withdraw Interest":"💛 Express Interest")
+      )
+    )
+  );
+}
+
+// ── Onboarding ────────────────────────────────────────────────
+function Onboarding(props) {
+  var stateStep = useState(0);
+  var step = stateStep[0]; var setStep = stateStep[1];
+  var stateVer = useState(0);
+  var verStep = stateVer[0]; var setVerStep = stateVer[1];
+  var stateForm = useState({gender:"",name:"",email:"",phone:"",country:"",sect:"",madhab:"",prayer:"",ethnicity:"",dob:"",wali:"",bio:""});
+  var form = stateForm[0]; var setForm = stateForm[1];
+
+  function set(k,v){setForm(function(p){var n=Object.assign({},p);n[k]=v;return n;});}
+
+  var STEPS = ["Account","Verify","Islamic","Photo","Done"];
+
+  function StepBar() {
+    return ce("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:24,position:"relative"}},
+      ce("div",{style:{position:"absolute",top:14,left:"10%",right:"10%",height:1,background:"#1E3D2A"}}),
+      ce("div",{style:{position:"absolute",top:14,left:"10%",width:(step/4*80)+"%",height:1,background:"#22A35F",transition:"width 0.4s"}}),
+      STEPS.map(function(_,i){
+        return ce("div",{key:i,style:{display:"flex",flexDirection:"column",alignItems:"center",gap:5,zIndex:1}},
+          ce("div",{style:{
+            width:28,height:28,borderRadius:"50%",
+            background:i<step?"#22A35F":i===step?"#D4A843":"#1C3A28",
+            border:"2px solid "+(i<step?"#22A35F":i===step?"#D4A843":"#1E3D2A"),
+            display:"flex",alignItems:"center",justifyContent:"center",
+            fontSize:11,fontWeight:700,
+            color:i<step||i===step?"#0D1F17":"#4D6B58",
+            transition:"all 0.3s"
+          }}, i<step?"✓":String(i+1)),
+          ce("div",{style:{fontSize:9,color:i===step?"#D4A843":"#4D6B58",fontWeight:600,whiteSpace:"nowrap"}},STEPS[i])
+        );
+      })
+    );
+  }
+
+  function InpField(p) {
+    return ce("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+      p.label && ce("label",{style:{fontSize:11,fontWeight:700,color:"#4D6B58",letterSpacing:"0.1em",textTransform:"uppercase"}},p.label),
+      ce("input",{type:p.type||"text",value:p.value,onChange:p.onChange,placeholder:p.placeholder,style:{padding:"12px 14px",borderRadius:10,background:"#1C3A28",border:"1px solid #1E3D2A",color:"#F0E8D5",fontSize:14,outline:"none",width:"100%"}}),
+      p.hint && ce("span",{style:{fontSize:11,color:"#4D6B58"}},p.hint)
+    );
+  }
+
+  function SelField(p) {
+    return ce("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+      p.label && ce("label",{style:{fontSize:11,fontWeight:700,color:"#4D6B58",letterSpacing:"0.1em",textTransform:"uppercase"}},p.label),
+      ce("select",{value:p.value,onChange:p.onChange,style:{padding:"12px 14px",borderRadius:10,background:"#1C3A28",border:"1px solid #1E3D2A",color:"#F0E8D5",fontSize:14,outline:"none",cursor:"pointer"}},
+        ce("option",{value:""},"Select..."),
+        p.options.map(function(o){return ce("option",{key:o,value:o,style:{background:"#1C3A28"}},o);})
+      )
+    );
+  }
+
+  return ce("div",{
+    style:{minHeight:"100vh",background:"#0D1F17",display:"flex",alignItems:"center",justifyContent:"center",padding:20,position:"relative",overflow:"hidden"}
+  },
+    ce(GeoPat,{op:0.04}),
+    ce("div",{style:{maxWidth:480,width:"100%",position:"relative",zIndex:1},className:"fadein"},
+      ce("div",{style:{textAlign:"center",marginBottom:24}},
+        ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:30,fontWeight:900,color:"#F0E8D5",lineHeight:1}},"NikkahPure"),
+        ce("div",{style:{fontSize:10,color:"#D4A843",letterSpacing:"0.2em",fontWeight:600,marginTop:4}},"VERIFIED · HALAL · TRUSTED")
+      ),
+      ce(StepBar,null),
+      ce("div",{style:{background:"#112318",border:"1px solid #1E3D2A",borderRadius:20,padding:24,position:"relative",overflow:"hidden"}},
+        ce(GeoPat,{op:0.03}),
+        ce("div",{style:{position:"relative"}},
+
+          step===0 && ce("div",{style:{display:"flex",flexDirection:"column",gap:14}},
+            ce("div",null,
+              ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:22,color:"#F0E8D5",marginBottom:4}},"Create Account"),
+              ce("div",{style:{fontSize:13,color:"#4D6B58"}},"Start your halal journey honestly")
+            ),
+            ce("div",{style:{display:"flex",gap:10}},
+              ["M","F"].map(function(g){
+                return ce("button",{
+                  key:g,
+                  onClick:function(){set("gender",g);},
+                  style:{
+                    flex:1,padding:"11px 0",borderRadius:10,
+                    background:form.gender===g?(g==="M"?"#22A35F22":"#D4A84322"):"#1C3A28",
+                    border:"1px solid "+(form.gender===g?(g==="M"?"#1A7A4A":"#D4A843"):"#1E3D2A"),
+                    color:form.gender===g?(g==="M"?"#22A35F":"#D4A843"):"#4D6B58",
+                    fontWeight:700,fontSize:13,cursor:"pointer",fontFamily:"'Lato',sans-serif"
+                  }
+                }, g==="M"?"🕌 Brother":"🌸 Sister");
+              })
+            ),
+            ce(InpField,{label:"Full Name (as on ID)",placeholder:"Your legal name",value:form.name,onChange:function(e){set("name",e.target.value);}}),
+            ce(InpField,{label:"Email",type:"email",placeholder:"your@email.com",value:form.email,onChange:function(e){set("email",e.target.value);}}),
+            ce(InpField,{label:"Phone",type:"tel",placeholder:"+44 7700 000000",value:form.phone,onChange:function(e){set("phone",e.target.value);}}),
+            ce(SelField,{label:"Country",options:COUNTRIES,value:form.country,onChange:function(e){set("country",e.target.value);}}),
+            ce(InpField,{label:"Date of Birth",type:"date",value:form.dob,onChange:function(e){set("dob",e.target.value);},hint:"Must be 18+. Verified against your ID."}),
+            ce("div",{style:{background:"#D4A84309",border:"1px solid #D4A84333",borderRadius:10,padding:"10px 12px",fontSize:12,color:"#4D6B58",lineHeight:1.6}},
+              "🔒 Your data is encrypted and never sold."
+            ),
+            ce("button",{className:"btn-gold",onClick:function(){setStep(1);},style:{padding:"13px 0",borderRadius:12,fontWeight:700,fontSize:14,width:"100%"}},"Continue →")
+          ),
+
+          step===1 && ce("div",{style:{display:"flex",flexDirection:"column",gap:14}},
+            ce("div",null,
+              ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:22,color:"#F0E8D5",marginBottom:4}},"Identity Verification"),
+              ce("div",{style:{fontSize:13,color:"#4D6B58"}},"Zero tolerance for fake profiles.")
+            ),
+            [
+              {title:"Government ID Upload",desc:"Upload passport or national ID. We verify name, age, and photo.",icon:"🪪"},
+              {title:"Live Selfie - Face Match",desc:"Real-time selfie confirms you match your ID photo.",icon:"🤳"},
+              {title:"Phone and Email OTP",desc:"One-time codes sent to confirm ownership.",icon:"📱"}
+            ].map(function(s,i){
+              var done = verStep > i;
+              var active = verStep === i;
+              return ce("div",{key:i,style:{display:"flex",gap:12,alignItems:"flex-start",padding:14,borderRadius:12,background:done?"#22A35F22":active?"#1C3A28":"#112318",border:"1px solid "+(done?"#1A7A4A44":"#1E3D2A")}},
+                ce("div",{style:{width:36,height:36,borderRadius:9,background:done?"#22A35F":"#163020",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}},done?"✓":s.icon),
+                ce("div",{style:{flex:1}},
+                  ce("div",{style:{fontWeight:700,fontSize:13,color:done?"#22A35F":active?"#F0E8D5":"#4D6B58",marginBottom:3}},s.title),
+                  ce("div",{style:{fontSize:12,color:"#4D6B58",lineHeight:1.5}},s.desc),
+                  active && ce("button",{
+                    className:"btn-gold",
+                    onClick:function(){setVerStep(verStep+1);},
+                    style:{marginTop:10,padding:"8px 16px",borderRadius:8,fontWeight:700,fontSize:12}
+                  }, i===0?"Upload ID":i===1?"Open Camera":"Verify Codes")
+                )
+              );
+            }),
+            verStep>=3 && ce("div",{style:{background:"#22A35F22",border:"1px solid #22A35F55",borderRadius:12,padding:14,textAlign:"center",fontWeight:700,color:"#22A35F"}},"✓ Identity Fully Verified!"),
+            ce("div",{style:{display:"flex",gap:10}},
+              ce("button",{className:"btn-outline",onClick:function(){setStep(0);},style:{padding:"11px 20px",borderRadius:10,fontWeight:600}},"← Back"),
+              verStep>=3 && ce("button",{className:"btn-gold",onClick:function(){setStep(2);},style:{flex:1,padding:"11px 0",borderRadius:10,fontWeight:700}},"Continue →")
+            )
+          ),
+
+          step===2 && ce("div",{style:{display:"flex",flexDirection:"column",gap:14}},
+            ce("div",null,
+              ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:22,color:"#F0E8D5",marginBottom:4}},"Islamic Profile"),
+              ce("div",{style:{fontSize:13,color:"#4D6B58"}},"Matching based on sect and madhab.")
+            ),
+            ce("div",{style:{background:"#D4A84309",border:"1px solid #D4A84333",borderRadius:10,padding:"10px 12px",fontSize:12,color:"#4D6B58",lineHeight:1.6}},
+              "⚠️ ",ce("strong",{style:{color:"#E8C97A"}},"Strict Matching:")," You only see profiles matching your sect and madhab exactly."
+            ),
+            ce(SelField,{label:"Sect *",options:SECTS,value:form.sect,onChange:function(e){set("sect",e.target.value);}}),
+            ce(SelField,{label:"Madhab *",options:MADHHABS,value:form.madhab,onChange:function(e){set("madhab",e.target.value);}}),
+            ce(SelField,{label:"Prayer Regularity *",options:PRAYERS,value:form.prayer,onChange:function(e){set("prayer",e.target.value);}}),
+            ce(SelField,{label:"Ethnicity",options:ETHNICITIES,value:form.ethnicity,onChange:function(e){set("ethnicity",e.target.value);}}),
+            ce("div",{style:{borderTop:"1px solid #1E3D2A",paddingTop:14}},
+              ce("div",{style:{fontSize:11,fontWeight:700,color:"#D4A843",letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:8}},"Wali Information"),
+              ce("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+                ce("input",{placeholder:"Full name of wali (Father, Brother, Guardian)",value:form.wali,onChange:function(e){set("wali",e.target.value);},style:{padding:"12px 14px",borderRadius:10,background:"#1C3A28",border:"1px solid #1E3D2A",color:"#F0E8D5",fontSize:13,outline:"none"}}),
+                ce("div",{style:{fontSize:11,color:"#4D6B58"}},"Sisters: required. Brothers: optional.")
+              )
+            ),
+            ce("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+              ce("label",{style:{fontSize:11,fontWeight:700,color:"#4D6B58",letterSpacing:"0.1em",textTransform:"uppercase"}},"About You"),
+              ce("textarea",{value:form.bio,onChange:function(e){set("bio",e.target.value);},placeholder:"Describe your deen, character, and what you seek...",rows:4,style:{padding:"12px 14px",borderRadius:10,background:"#1C3A28",border:"1px solid #1E3D2A",color:"#F0E8D5",fontSize:13,outline:"none",resize:"vertical",lineHeight:1.7}})
+            ),
+            ce("div",{style:{display:"flex",gap:10}},
+              ce("button",{className:"btn-outline",onClick:function(){setStep(1);},style:{padding:"11px 20px",borderRadius:10,fontWeight:600}},"← Back"),
+              ce("button",{className:"btn-gold",onClick:function(){setStep(3);},style:{flex:1,padding:"11px 0",borderRadius:10,fontWeight:700}},"Continue →")
+            )
+          ),
+
+          step===3 && ce("div",{style:{display:"flex",flexDirection:"column",gap:14}},
+            ce("div",null,
+              ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:22,color:"#F0E8D5",marginBottom:4}},"Profile Photo"),
+              ce("div",{style:{fontSize:13,color:"#4D6B58"}},"A real face photo is mandatory.")
+            ),
+            ce("div",{style:{background:"#E0505012",border:"1px solid #E0505044",borderRadius:12,padding:"12px 14px",fontSize:12,color:"#E08080",lineHeight:1.6}},
+              "⚠️ Face must be clearly visible. No filters or avatars. Cross-checked against your ID. Violations = permanent ban."
+            ),
+            ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}},
+              ["Main Photo (Required)","2nd Photo (Optional)"].map(function(l,i){
+                return ce("div",{key:i,style:{border:"2px dashed "+(i===0?"#D4A843":"#1E3D2A"),borderRadius:12,padding:"28px 10px",textAlign:"center",cursor:"pointer",background:"#1C3A28"}},
+                  ce("div",{style:{fontSize:28,marginBottom:8}},"📷"),
+                  ce("div",{style:{fontSize:12,color:i===0?"#8FAF9A":"#4D6B58"}},l)
+                );
+              })
+            ),
+            ce("div",{style:{background:"#1C3A28",border:"1px solid #1E3D2A",borderRadius:12,padding:"14px 16px"}},
+              ce("div",{style:{fontWeight:700,fontSize:13,color:"#F0E8D5",marginBottom:6}},"👁️ Face Recognition Check"),
+              ce("div",{style:{fontSize:12,color:"#4D6B58",lineHeight:1.8}},
+                "✓ Confirms face matches Government ID",ce("br"),
+                "✓ Duplicate detection across platform",ce("br"),
+                "✓ Liveness detection - no stolen photos",ce("br"),
+                "✓ AI-generated face detection"
+              )
+            ),
+            ce("div",{style:{display:"flex",gap:10}},
+              ce("button",{className:"btn-outline",onClick:function(){setStep(2);},style:{padding:"11px 20px",borderRadius:10,fontWeight:600}},"← Back"),
+              ce("button",{className:"btn-gold",onClick:function(){setStep(4);},style:{flex:1,padding:"11px 0",borderRadius:10,fontWeight:700}},"Complete →")
+            )
+          ),
+step===4 && ce("div",{style:{textAlign:"center",display:"flex",flexDirection:"column",alignItems:"center",gap:16,padding:"8px 0"}},
+            ce("div",{style:{width:70,height:70,borderRadius:"50%",background:"#22A35F22",border:"2px solid #22A35F",display:"flex",alignItems:"center",justifyContent:"center",fontSize:32}},"✓"),
+            ce("div",null,
+              ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:24,color:"#F0E8D5",marginBottom:8}},"Profile Submitted!"),
+              ce("div",{style:{fontSize:13,color:"#8FAF9A",lineHeight:1.8}},
+                "Jazakallahu Khairan. Your profile is under admin review.",ce("br"),
+                "You will receive an email within 24 hours once approved.",ce("br"),
+                "No profile goes live without human verification."
+              )
+            ),
+            ce("div",{style:{width:"100%",background:"#1C3A28",border:"1px solid #1E3D2A",borderRadius:12,padding:"14px 16px",textAlign:"left"}},
+              ce("div",{style:{fontSize:12,color:"#4D6B58",lineHeight:2}},
+                ce("span",{style:{color:"#22A35F"}},"✓")," Government ID verified",ce("br"),
+                ce("span",{style:{color:"#22A35F"}},"✓")," Face match confirmed",ce("br"),
+                ce("span",{style:{color:"#22A35F"}},"✓")," Phone and email verified",ce("br"),
+                ce("span",{style:{color:"#D4A843"}},"⏳")," Admin review: pending (24h)"
+              )
+            ),
+            ce("button",{className:"btn-gold",onClick:props.onFinish,style:{padding:"14px 0",borderRadius:12,fontWeight:700,fontSize:15,width:"100%"}},"Enter NikkahPure →")
+          )
+        )
+      )
+    )
+  );
+}
+
+// ── Main App ──────────────────────────────────────────────────
+function MainApp() {
+  var stateTab = useState("browse");
+  var tab = stateTab[0]; var setTab = stateTab[1];
+  var stateSearch = useState("");
+  var search = stateSearch[0]; var setSearch = stateSearch[1];
+  var stateGender = useState("all");
+  var gFilter = stateGender[0]; var setGFilter = stateGender[1];
+  var stateInt = useState({2:true,4:true,6:true,8:true});
+  var interested = stateInt[0]; var setInterested = stateInt[1];
+  var stateSel = useState(null);
+  var selected = stateSel[0]; var setSelected = stateSel[1];
+  var stateSect = useState("Sunni");
+  var sect = stateSect[0]; var setSect = stateSect[1];
+  var stateMadhab = useState("Hanafi");
+  var madhab = stateMadhab[0]; var setMadhab = stateMadhab[1];
+  var stateFilters = useState(false);
+  var showFilters = stateFilters[0]; var setShowFilters = stateFilters[1];
+
+  function toggleInt(id) {
+    setInterested(function(p){
+      var n = Object.assign({},p);
+      if(n[id]) delete n[id]; else n[id]=true;
+      return n;
+    });
+  }
+
+  var filtered = PROFILES.filter(function(p){
+    if(gFilter!=="all" && p.gender!==gFilter) return false;
+    if(sect && p.sect!==sect) return false;
+    if(madhab && p.madhab!==madhab) return false;
+    if(search && p.name.toLowerCase().indexOf(search.toLowerCase())<0 && p.location.toLowerCase().indexOf(search.toLowerCase())<0) return false;
+    return true;
+  });
+
+  var mutuals = PROFILES.filter(function(p){return p.mutual && interested[p.id];});
+  var mutualCount = mutuals.length;
+
+  var TABS = [
+    {id:"browse",label:"🔍 Discover"},
+    {id:"matches",label:"💚 Matches"+(mutualCount>0?" ("+mutualCount+")":"")},
+    {id:"messages",label:"💬 Messages"},
+    {id:"profile",label:"👤 Profile"}
+  ];
+
+  return ce("div",{style:{minHeight:"100vh",background:"#0D1F17",paddingBottom:20}},
+    ce("header",{style:{background:"#112318",borderBottom:"1px solid #1E3D2A",padding:"0 20px",position:"sticky",top:0,zIndex:50}},
+      ce("div",{style:{maxWidth:1100,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",height:62,flexWrap:"wrap",gap:8}},
+        ce("div",null,
+          ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:20,fontWeight:700,color:"#F0E8D5",lineHeight:1}},"NikkahPure"),
+          ce("div",{style:{fontSize:9,color:"#D4A843",letterSpacing:"0.15em",fontWeight:600}},"VERIFIED · HALAL")
+        ),
+        ce("nav",{style:{display:"flex",gap:2,flexWrap:"wrap"}},
+          TABS.map(function(t){
+            return ce("button",{
+              key:t.id,
+              onClick:function(){setTab(t.id);},
+              style:{
+                padding:"7px 12px",borderRadius:8,border:"none",
+                background:tab===t.id?"#1C3A28":"transparent",
+                color:tab===t.id?"#D4A843":"#4D6B58",
+                fontWeight:tab===t.id?700:400,
+                fontSize:12,cursor:"pointer",fontFamily:"'Lato',sans-serif"
+              }
+            },t.label);
+          })
+        )
+      )
+    ),
+    ce("main",{style:{maxWidth:1100,margin:"0 auto",padding:"24px 16px"}},
+
+      tab==="browse" && ce("div",null,
+        ce("div",{style:{background:"linear-gradient(135deg,#163020,#1C3A28)",borderRadius:18,padding:"28px",marginBottom:24,position:"relative",overflow:"hidden"}},
+          ce(GeoPat,{op:0.07}),
+          ce("div",{style:{position:"relative"}},
+            ce("div",{style:{fontSize:11,color:"#D4A843",letterSpacing:"0.2em",fontWeight:600,marginBottom:8}},"\u0628\u0650\u0633\u0652\u0645\u0650 \u0627\u0644\u0644\u0651\u064e\u0647\u0650 \u0627\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0646\u0650 \u0627\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0645\u0650"),
+            ce("h1",{style:{fontFamily:"'Playfair Display',serif",fontSize:"clamp(22px,4vw,36px)",fontWeight:900,color:"#F0E8D5",margin:"0 0 8px",lineHeight:1.2}},"Find Your Righteous Partner"),
+            ce("p",{style:{fontSize:13,color:"#8FAF9A",maxWidth:440,lineHeight:1.7,margin:"0 0 14px"}},'"And of His signs is that He created for you from yourselves mates that you may find tranquility in them." - Quran 30:21'),
+            ce("div",{style:{display:"flex",gap:8,flexWrap:"wrap"}},
+              ce(Badge,{label:"✓ All profiles verified",v:"green"}),
+              ce(Badge,{label:"✓ Real face confirmed",v:"green"}),
+              ce(Badge,{label:"✓ Sect-matched only",v:"gold"}),
+              ce(Badge,{label:"✓ Mutual interest required",v:"gold"})
+            )
+          )
+        ),
+        ce("div",{style:{display:"flex",gap:8,marginBottom:14,flexWrap:"wrap"}},
+          ce("input",{
+            value:search,
+            onChange:function(ev){setSearch(ev.target.value);},
+            placeholder:"🔍 Search by name or city...",
+            style:{flex:1,minWidth:200,padding:"10px 14px",borderRadius:10,background:"#112318",border:"1px solid #1E3D2A",color:"#F0E8D5",fontSize:13,outline:"none"}
+          }),
+          ["all","M","F"].map(function(g){
+            return ce("button",{
+              key:g,
+              onClick:function(){setGFilter(g);},
+              style:{
+                padding:"10px 14px",borderRadius:10,
+                border:"1px solid "+(gFilter===g?"#D4A843":"#1E3D2A"),
+                background:gFilter===g?"#D4A84322":"#112318",
+                color:gFilter===g?"#D4A843":"#4D6B58",
+                fontWeight:600,fontSize:12,cursor:"pointer",fontFamily:"'Lato',sans-serif"
+              }
+            }, g==="all"?"All":g==="M"?"Brothers":"Sisters");
+          }),
+          ce("button",{
+            onClick:function(){setShowFilters(!showFilters);},
+            style:{
+              padding:"10px 14px",borderRadius:10,
+              border:"1px solid "+(showFilters?"#1A7A4A":"#1E3D2A"),
+              background:showFilters?"#22A35F22":"#112318",
+              color:showFilters?"#22A35F":"#4D6B58",
+              fontWeight:600,fontSize:12,cursor:"pointer",fontFamily:"'Lato',sans-serif"
+            }
+          },"⚙️ Filters")
+        ),
+        showFilters && ce("div",{style:{background:"#112318",border:"1px solid #1E3D2A",borderRadius:12,padding:16,marginBottom:14,display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:12}},
+          ce("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+            ce("label",{style:{fontSize:11,fontWeight:700,color:"#4D6B58",letterSpacing:"0.1em",textTransform:"uppercase"}},"Sect"),
+            ce("select",{value:sect,onChange:function(e){setSect(e.target.value);},style:{padding:"10px 12px",borderRadius:10,background:"#1C3A28",border:"1px solid #1E3D2A",color:"#F0E8D5",fontSize:13,outline:"none"}},
+              SECTS.map(function(o){return ce("option",{key:o,value:o,style:{background:"#1C3A28"}},o);})
+            )
+          ),
+          ce("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+            ce("label",{style:{fontSize:11,fontWeight:700,color:"#4D6B58",letterSpacing:"0.1em",textTransform:"uppercase"}},"Madhab"),
+            ce("select",{value:madhab,onChange:function(e){setMadhab(e.target.value);},style:{padding:"10px 12px",borderRadius:10,background:"#1C3A28",border:"1px solid #1E3D2A",color:"#F0E8D5",fontSize:13,outline:"none"}},
+              MADHHABS.map(function(o){return ce("option",{key:o,value:o,style:{background:"#1C3A28"}},o);})
+            )
+          )
+        ),
+        ce("div",{style:{fontSize:12,color:"#4D6B58",marginBottom:16}},
+          "Showing ",ce("strong",{style:{color:"#22A35F"}},filtered.length)," verified profiles"
+        ),
+        ce("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:16}},
+          filtered.map(function(p){
+            return ce(ProfileCard,{key:p.id,p:p,onView:function(x){setSelected(x);},onInterest:toggleInt,expressed:!!interested[p.id],mutual:p.mutual&&!!interested[p.id]});
+          })
+        ),
+        filtered.length===0 && ce("div",{style:{textAlign:"center",padding:"48px 0"}},
+          ce("div",{style:{fontSize:32,marginBottom:10}},"🔍"),
+          ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:20,color:"#F0E8D5",marginBottom:6}},"No profiles found"),
+          ce("div",{style:{fontSize:13,color:"#4D6B58"}},"Try adjusting your filters")
+        )
+      ),
+
+      tab==="matches" && ce("div",null,
+        ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:26,color:"#F0E8D5",marginBottom:6}},"Your Matches"),
+        ce("p",{style:{fontSize:13,color:"#4D6B58",marginBottom:22}},
+          "Only shown when ",ce("strong",{style:{color:"#D4A843"}},"both parties")," have expressed interest."
+        ),
+        mutuals.length===0
+          ? ce("div",{style:{textAlign:"center",padding:"48px 0"}},
+              ce("div",{style:{fontSize:32,marginBottom:10}},"💚"),
+              ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:18,color:"#F0E8D5",marginBottom:6}},"No mutual matches yet"),
+              ce("div",{style:{fontSize:13,color:"#4D6B58"}},"Express interest in profiles to get matches.")
+            )
+          : ce("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:16}},
+              mutuals.map(function(p){
+                return ce(ProfileCard,{key:p.id,p:p,onView:function(x){setSelected(x);},onInterest:toggleInt,expressed:!!interested[p.id],mutual:true});
+              })
+            )
+      ),
+
+      tab==="messages" && ce("div",null,
+        ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:26,color:"#F0E8D5",marginBottom:6}},"Messages"),
+        ce("p",{style:{fontSize:13,color:"#4D6B58",marginBottom:22}},"Conversations unlock after mutual interest. All chat moderated for Islamic adab."),
+        ce("div",{style:{background:"#112318",border:"1px solid #1E3D2A",borderRadius:16,overflow:"hidden"}},
+          mutuals.length===0
+            ? ce("div",{style:{padding:"48px 24px",textAlign:"center"}},
+                ce("div",{style:{fontSize:32,marginBottom:10}},"🔒"),
+                ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:18,color:"#F0E8D5",marginTop:8,marginBottom:6}},"No conversations yet"),
+                ce("div",{style:{fontSize:13,color:"#4D6B58"}},"Mutual matches unlock messaging.")
+              )
+            : mutuals.map(function(p,i){
+                return ce("div",{
+                  key:p.id,
+                  style:{display:"flex",gap:14,alignItems:"center",padding:"14px 18px",borderBottom:i<mutuals.length-1?"1px solid #1E3D2A":"none",cursor:"pointer"}
+                },
+                  ce(Av,{ini:p.ini,col:p.col,size:46}),
+                  ce("div",{style:{flex:1}},
+                    ce("div",{style:{fontWeight:700,fontSize:14,color:"#F0E8D5",marginBottom:2}},p.name),
+                    ce("div",{style:{fontSize:12,color:"#4D6B58"}},"Tap to start conversation · Wali notified")
+                  ),
+                  ce(Badge,{label:"💚 Mutual",v:"green"})
+                );
+              })
+        )
+      ),
+tab==="profile" && ce("div",{style:{maxWidth:560}},
+        ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:26,color:"#F0E8D5",marginBottom:6}},"My Profile"),
+        ce("p",{style:{fontSize:13,color:"#4D6B58",marginBottom:22}},"Your verified identity. Edits require re-verification."),
+        ce("div",{style:{background:"#112318",border:"1px solid #1E3D2A",borderRadius:18,overflow:"hidden"}},
+          ce("div",{style:{background:"linear-gradient(135deg,#163020,#1C3A28)",padding:"24px 22px",position:"relative",overflow:"hidden"}},
+            ce(GeoPat,{op:0.06}),
+            ce("div",{style:{display:"flex",gap:16,alignItems:"center",position:"relative"}},
+              ce(Av,{ini:"ME",col:"#D4A843",size:76}),
+              ce("div",null,
+                ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:20,color:"#F0E8D5"}},"Your Name"),
+                ce("div",{style:{fontSize:13,color:"#8FAF9A",marginTop:3}},"Verified Member · Sunni · Hanafi"),
+                ce("div",{style:{display:"flex",gap:6,marginTop:7}},
+                  ce(Badge,{label:"✓ VERIFIED",v:"green"}),
+                  ce(Badge,{label:"Active",v:"green"})
+                )
+              )
+            )
+          ),
+          ce("div",{style:{padding:"20px 22px",display:"flex",flexDirection:"column",gap:10}},
+            [
+              {icon:"🛡️",l:"Identity Verification",v:"Govt ID + Face Match + OTP ✓",c:"#22A35F"},
+              {icon:"🌙",l:"Sect and Madhab",v:"Sunni · Hanafi",c:"#D4A843"},
+              {icon:"⭐",l:"Prayer",v:"5x daily (never miss)",c:"#D4A843"},
+              {icon:"📷",l:"Profile Photo",v:"Verified face match ✓",c:"#22A35F"},
+              {icon:"🛡️",l:"Wali",v:"Name recorded and notified",c:"#D4A843"}
+            ].map(function(r){
+              return ce("div",{key:r.l,style:{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background:"#1C3A28",borderRadius:10,border:"1px solid #1E3D2A"}},
+                ce("span",{style:{fontSize:18}},r.icon),
+                ce("div",{style:{flex:1}},
+                  ce("div",{style:{fontSize:10,color:"#4D6B58",fontWeight:700,letterSpacing:"0.06em"}},r.l.toUpperCase()),
+                  ce("div",{style:{fontSize:13,color:r.c,marginTop:2,fontWeight:600}},r.v)
+                )
+              );
+            }),
+            ce("button",{className:"btn-outline",style:{marginTop:6,padding:"12px 0",borderRadius:10,fontWeight:600,fontSize:13,width:"100%"}},"⚙️ Edit Profile (requires re-verification)"),
+            ce("button",{style:{padding:"12px 0",borderRadius:10,background:"#C9404015",color:"#E05050",border:"1px solid #E0505044",fontWeight:600,fontSize:13,cursor:"pointer",width:"100%",fontFamily:"'Lato',sans-serif"}},"🗑️ Delete Account")
+          )
+        )
+      )
+    ),
+    selected && ce(ProfileModal,{p:selected,onClose:function(){setSelected(null);},onInterest:toggleInt,expressed:!!interested[selected.id]})
+  );
+}
+
+// ── Landing ───────────────────────────────────────────────────
+function Landing(props) {
+  var features = [
+    {icon:"🪪",t:"Government ID Verified",d:"Every member uploads a real government ID. We check name, age, and photo before anyone goes live."},
+    {icon:"🤳",t:"Live Face Recognition",d:"A live selfie is matched against your ID. No stock photos, no catfishing ever. AI liveness blocks spoofing."},
+    {icon:"🛡️",t:"Wali Liaison System",d:"Sisters nominate a wali. Contact is facilitated through our Wali Liaison - keeping the process halal."},
+    {icon:"🔒",t:"Mutual Interest Required",d:"No unsolicited messages. Both parties must express interest before any contact is possible."},
+    {icon:"🌙",t:"Sect and Madhab Matching",d:"You only see profiles that match your sect and madhab exactly. Compatible foundations from day one."},
+    {icon:"👁️",t:"Admin-Reviewed Profiles",d:"No profile goes live without a human moderator approving the photo, ID, and bio."}
+  ];
+
+  return ce("div",{style:{minHeight:"100vh",background:"#0D1F17",position:"relative",overflow:"hidden"}},
+    ce(GeoPat,{op:0.05}),
+    ce("nav",{style:{position:"sticky",top:0,zIndex:50,background:"#0D1F17EE",backdropFilter:"blur(12px)",borderBottom:"1px solid #1E3D2A",padding:"0 20px"}},
+      ce("div",{style:{maxWidth:1100,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",height:62}},
+        ce("div",null,
+          ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:22,fontWeight:700,color:"#F0E8D5",lineHeight:1}},"NikkahPure"),
+          ce("div",{style:{fontSize:9,color:"#D4A843",letterSpacing:"0.18em",fontWeight:600}},"VERIFIED · HALAL · TRUSTED")
+        ),
+        ce("div",{style:{display:"flex",gap:10,alignItems:"center"}},
+          ce("span",{style:{fontSize:12,color:"#4D6B58"}},"iOS & Android"),
+          ce("button",{className:"btn-gold",onClick:props.onStart,style:{padding:"9px 20px",borderRadius:9,fontWeight:700,fontSize:13}},"Get Started Free")
+        )
+      )
+    ),
+    ce("div",{style:{maxWidth:1100,margin:"0 auto",padding:"64px 20px 48px",textAlign:"center",position:"relative"}},
+      ce("div",{style:{fontSize:12,color:"#D4A843",letterSpacing:"0.2em",fontWeight:600,marginBottom:14}},"\u0628\u0650\u0633\u0652\u0645\u0650 \u0627\u0644\u0644\u0651\u064e\u0647\u0650 \u0627\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0646\u0650 \u0627\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0645\u0650"),
+      ce("h1",{style:{fontFamily:"'Playfair Display',serif",fontSize:"clamp(32px,6vw,60px)",fontWeight:900,color:"#F0E8D5",lineHeight:1.1,margin:"0 0 18px"}},
+        "The World's Most",ce("br",null),
+        ce("span",{style:{color:"#D4A843"}},"Strictly Verified"),ce("br",null),
+        "Halal Marriage App"
+      ),
+      ce("p",{style:{fontSize:15,color:"#8FAF9A",maxWidth:480,margin:"0 auto 28px",lineHeight:1.8}},
+        "Not another swipe app. NikkahPure is built on identity verification, Islamic values, and complete transparency."
+      ),
+      ce("div",{style:{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginBottom:40}},
+        ce("button",{className:"btn-gold",onClick:props.onStart,style:{padding:"15px 32px",borderRadius:12,fontWeight:800,fontSize:15}},"🕌 Get Started - It's Free"),
+        ce("button",{className:"btn-outline",style:{padding:"15px 24px",borderRadius:12,fontWeight:600,fontSize:14}},"📱 Download the App")
+      ),
+      ce("div",{style:{display:"flex",gap:14,justifyContent:"center",flexWrap:"wrap"}},
+        ["100% Verified Profiles","Zero Fake Accounts","Wali System Built-in","Mutual Interest Only"].map(function(b){
+          return ce("span",{key:b,style:{fontSize:13,color:"#8FAF9A"}},
+            ce("span",{style:{color:"#22A35F",fontWeight:700}},"✓")," "+b
+          );
+        })
+      )
+    ),
+    ce("div",{style:{maxWidth:1100,margin:"0 auto",padding:"0 20px 60px"}},
+      ce("div",{style:{textAlign:"center",marginBottom:36}},
+        ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:30,fontWeight:700,color:"#F0E8D5",marginBottom:8}},"Why NikkahPure Beats The Rest"),
+        ce("div",{style:{fontSize:13,color:"#4D6B58"}},"Every feature designed around Islamic principles and maximum security")
+      ),
+      ce("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:16}},
+        features.map(function(f){
+          return ce("div",{key:f.t,className:"hover-card",style:{background:"#112318",border:"1px solid #1E3D2A",borderRadius:14,padding:"20px 18px"}},
+            ce("div",{style:{width:42,height:42,borderRadius:10,background:"#D4A84322",border:"1px solid #D4A84333",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,marginBottom:12}},f.icon),
+            ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:16,fontWeight:700,color:"#F0E8D5",marginBottom:6}},f.t),
+            ce("p",{style:{fontSize:13,color:"#8FAF9A",lineHeight:1.7,margin:0}},f.d)
+          );
+        })
+      )
+    ),
+    ce("div",{style:{background:"#112318",borderTop:"1px solid #1E3D2A",padding:"40px 20px",textAlign:"center"}},
+      ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:26,color:"#F0E8D5",marginBottom:8}},"Download NikkahPure"),
+      ce("p",{style:{fontSize:13,color:"#4D6B58",marginBottom:24}},"Available on Google Play Store and Apple App Store. Free to download."),
+      ce("div",{style:{display:"flex",gap:14,justifyContent:"center",flexWrap:"wrap",marginBottom:20}},
+        [{store:"Google Play",icon:"▶",sub:"GET IT ON"},{store:"App Store",icon:"🍎",sub:"Download on the"}].map(function(s){
+          return ce("div",{key:s.store,style:{display:"flex",alignItems:"center",gap:10,background:"#1C3A28",border:"1px solid #D4A84333",borderRadius:12,padding:"12px 20px",cursor:"pointer",minWidth:160}},
+            ce("span",{style:{fontSize:24}},s.icon),
+            ce("div",{style:{textAlign:"left"}},
+              ce("div",{style:{fontSize:9,color:"#4D6B58",letterSpacing:"0.08em"}},s.sub),
+              ce("div",{style:{fontFamily:"'Playfair Display',serif",fontSize:16,fontWeight:700,color:"#F0E8D5"}},s.store)
+            )
+          );
+        })
+      ),
+      ce("p",{style:{fontSize:11,color:"#4D6B58"}},"Built with Islamic values · GDPR compliant · © 2025 NikkahPure Ltd"),
+      ce("div",{style:{display:"flex",gap:16,justifyContent:"center",marginTop:10,flexWrap:"wrap"}},
+        ["Privacy Policy","Terms of Service","Islamic Guidelines","Contact Us","Report Abuse"].map(function(l){
+          return ce("span",{key:l,style:{fontSize:11,color:"#4D6B58",cursor:"pointer",textDecoration:"underline"}},l);
+        })
+      )
+    )
+  );
+}
+
+// ── Root ──────────────────────────────────────────────────────
+function App() {
+  var statePage = useState("landing");
+  var page = statePage[0]; var setPage = statePage[1];
+  if(page==="landing") return ce(Landing,{onStart:function(){setPage("onboarding");}});
+  if(page==="onboarding") return ce(Onboarding,{onFinish:function(){setPage("app");}});
+  return ce(MainApp,null);
+}
+
+var container = document.getElementById("app");
+var root = ReactDOM.createRoot(container);
+root.render(ce(App,null));
 </script>
 </body>
 </html>
+HTMLEOF
+echo "Done - $(wc -l < /mnt/user-data/outputs/index.html) lines"
